@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
-
+use Mail;
 
 class UsersController extends Controller
 {
@@ -14,7 +14,7 @@ class UsersController extends Controller
 
         $this->middleware('auth', [
 
-            'except' => ['show','create','store','index']
+            'except' => ['show','create','store','index','confirmEmail']
         ]);
 
         $this->middleware('guest', [
@@ -22,6 +22,17 @@ class UsersController extends Controller
         ]);
     }
 
+    //用户的激活
+    public function confirmEmail($token){
+        $user = User::where('activation_token', $token)->firstOrFail();
+        $user->activation_token =null;
+        $user->activated = true;
+        $user->save();
+
+        Auth::login($user);
+        session()->flash('success','恭喜你，激活成功');
+        return redirect()->route('users.show',[$user]);
+    }
 
     //显示注册页
     public function create(){
@@ -49,11 +60,25 @@ class UsersController extends Controller
             'password' => bcrypt($request->password),
 
          ]);
-         Auth::login($user);
 
-         session()->flash('success','注册成功');
+         $this->sendEmailConfirmationTo($user);
+         session()->flash('success','验证邮件已发送到您注册邮箱上，请注意查收');
 
-        return redirect()->route('users.show',[$user]);
+        return redirect('/');
+    }
+
+    //发送邮件给指定用户
+    protected function sendEmailConfirmationTo($user){
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = '295741509@qq.com';
+        $name = 'qianqian';
+        $to   = $user->email;
+        $subject = '感谢注册 JIA YOU 应用！请确认您的邮箱';
+
+        Mail::send($view, $data, function ($message) use ($from, $name, $to, $subject){
+            $message->from($from, $name)->to($to)->subject($subject);
+        });
     }
 
     //显示编辑表单
