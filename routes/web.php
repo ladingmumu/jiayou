@@ -23,10 +23,20 @@ Route::get('/help','StaticPagesController@help')->name('help');
 Route::get('/about','StaticPagesController@about')->name('about');
 
 //注册页面
-Route::get('/signup','UsersController@create')->name('create');
+Route::get('/signup','UsersController@create')->name('signup');
 
 //用户资源路由
 Route::resource('users','UsersController');
+
+//显示登录页面
+Route::get('login','SessionsController@create')->name('login');
+
+//用户登录
+Route::post('login','SessionsController@store')->name('login');
+
+//退出登录
+Route::delete('logout','SessionsController@destroy')->name('logout');
+
 
 
 

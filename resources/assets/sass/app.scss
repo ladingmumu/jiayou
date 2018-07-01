@@ -148,10 +148,31 @@ input {
     margin-top: 50px;
 }
 
+/* header */
+.navbar-inverse {
+    background-color: $navbar-color;
+}
 
+#logo {
+    float: left;
+    margin-right: 10px;
+    font-size: 1.7em;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: -1px;
+    padding-top: 9px;
+    font-weight: bold;
+    &:hover {
+        color: #fff;
+    }
+}
 
-
-
+#logout {
+    cursor: default;
+    &:hover {
+        background-color: transparent;
+    }
+}
 
 
 
