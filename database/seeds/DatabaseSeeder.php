@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);
         $this->call(StatusesTableSeeder::class);
+        $this->call(FollowersTableSeeder::class);
 
         //填充完毕后重新打开保护
         Model::reguard();

@@ -19,7 +19,7 @@
                 <div class="form-group{{$errors->has('email') ? 'has-error': '' }}">
                     <label for="email" class="col-md-4 control-label">邮箱地址：</label>
                     <div class="col-md-6">
-                        <input type="email" name="name" id="email" value="{{ $email or old('email') }}" class="form-control" required autofocus>
+                        <input type="email" name="email" id="email" value="{{ $email or old('email') }}" class="form-control" required autofocus>
                         @if($errors->has('email'))
                             <span class="help-block">
                                 <strong>
