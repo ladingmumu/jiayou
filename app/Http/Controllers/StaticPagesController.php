@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Status;
+use Auth;
 
 class StaticPagesController extends Controller
 {
     //显示首页
     public function home(){
-        return view('static_pages.home');
+       $feed_items = [];
+       if (Auth::check()){
+        $feed_items = Auth::user()->feed()->paginate(10);
+       }
+        return view('static_pages.home',compact('feed_items'));
     }
 
     //显示帮助页

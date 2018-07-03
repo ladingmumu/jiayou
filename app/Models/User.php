@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Notifications\ResetPasswrod;
 
 class User extends Authenticatable
 {
@@ -41,4 +42,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    //发送重置密码通知
+    public function sendPasswordResetNotification($token){
+        $this->notify(new ResetPassword($token));
+    }
+
+    //一个用户拥有多条微博
+    public function statuses(){
+        return $this->hasMany(Status::class);
+    }
+
+    //从数据库获取当前用户发布过的所有微博数据
+    public function feed(){
+        return $this->statuses()->orderBy('created_at','desc');
+    }
 }
